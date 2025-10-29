@@ -20,7 +20,7 @@ class Job1111Crawler:
         """初始化爬蟲"""
         self.base_url = "https://www.1111.com.tw"
         self.setup_session()
-        print("🚀 1111 人力銀行爬蟲已初始化")
+        print("1111 人力銀行爬蟲已初始化")
     
     def setup_session(self):
         """設定 HTTP session 和請求標頭"""
@@ -70,20 +70,20 @@ class Job1111Crawler:
             response.encoding = 'utf-8'
             
             if response.status_code == 200:
-                print(f"✅ 成功獲取搜尋結果")
+                print(f"成功獲取搜尋結果")
                 return response.text
             else:
-                print(f"❌ 搜尋失敗，狀態碼: {response.status_code}")
+                print(f"搜尋失敗，狀態碼: {response.status_code}")
                 return None
                 
         except requests.exceptions.Timeout:
-            print("⏰ 請求超時")
+            print("請求超時")
             return None
         except requests.exceptions.ConnectionError:
-            print("🌐 連線錯誤")
+            print("連線錯誤")
             return None
         except Exception as e:
-            print(f"❌ 搜尋錯誤: {e}")
+            print(f"搜尋錯誤: {e}")
             return None
     
     def parse_jobs(self, html_content):
@@ -101,7 +101,7 @@ class Job1111Crawler:
         
         # 使用 .job-card 選擇器找到職缺卡片
         job_cards = soup.select('.job-card')
-        print(f"📋 找到 {len(job_cards)} 個職缺卡片")
+        print(f"找到 {len(job_cards)} 個職缺卡片")
         
         for i, card in enumerate(job_cards):
             job_info = self.extract_job_from_card(card, i+1)
@@ -215,7 +215,7 @@ class Job1111Crawler:
             return job_info if job_info.get('title') else None
             
         except Exception as e:
-            print(f"⚠️ 解析職缺卡片 {index} 時發生錯誤: {e}")
+            print(f"解析職缺卡片 {index} 時發生錯誤: {e}")
             return None
     
     def calculate_relevance_score(self, text):
@@ -255,28 +255,28 @@ class Job1111Crawler:
             jobs (list): 職缺資訊列表
         """
         if not jobs:
-            print("❌ 沒有找到職缺資料")
+            print("沒有找到職缺資料")
             return
         
-        print(f"\\n🎯 成功爬取 {len(jobs)} 個職缺")
+        print(f"\\n成功爬取 {len(jobs)} 個職缺")
         print("=" * 80)
         
         for job in jobs:
-            print(f"\\n📋 職缺 {job.get('index', 'N/A')}")
-            print(f"🏢 標題: {job.get('title', 'N/A')}")
-            print(f"🏪 公司: {job.get('company', 'N/A')}")
-            print(f"📍 地點: {job.get('location', 'N/A')}")
-            print(f"💰 薪資: {job.get('salary', 'N/A')}")
-            print(f"📝 條件: {job.get('conditions', 'N/A')}")
-            print(f"📅 發布: {job.get('publish_date', 'N/A')}")
-            print(f"⭐ 相關度: {job.get('relevance_score', 'N/A')}")
+            print(f"\\n職缺 {job.get('index', 'N/A')}")
+            print(f"標題: {job.get('title', 'N/A')}")
+            print(f"公司: {job.get('company', 'N/A')}")
+            print(f"地點: {job.get('location', 'N/A')}")
+            print(f"薪資: {job.get('salary', 'N/A')}")
+            print(f"條件: {job.get('conditions', 'N/A')}")
+            print(f"發布: {job.get('publish_date', 'N/A')}")
+            print(f"相關度: {job.get('relevance_score', 'N/A')}")
             
             if job.get('summary'):
                 summary = job['summary'][:100] + "..." if len(job['summary']) > 100 else job['summary']
-                print(f"📄 摘要: {summary}")
+                print(f"摘要: {summary}")
             
             if job.get('link'):
-                print(f"🔗 連結: {job['link']}")
+                print(f"連結: {job['link']}")
             
             print("-" * 60)
     
@@ -292,12 +292,12 @@ class Job1111Crawler:
             pandas.DataFrame: 職缺資料框
         """
         if not jobs:
-            print("❌ 沒有職缺資料可儲存")
+            print("沒有職缺資料可儲存")
             return None
         
         df = pd.DataFrame(jobs)
         df.to_csv(filename, index=False, encoding='utf-8-sig')
-        print(f"✅ 已儲存 {len(jobs)} 筆職缺資料到 {filename}")
+        print(f"已儲存 {len(jobs)} 筆職缺資料到 {filename}")
         return df
     
     def analyze_jobs(self, jobs):
@@ -308,10 +308,10 @@ class Job1111Crawler:
             jobs (list): 職缺資訊列表
         """
         if not jobs:
-            print("❌ 沒有職缺資料可分析")
+            print("沒有職缺資料可分析")
             return
         
-        print(f"\\n📊 統計分析")
+        print(f"\\n統計分析")
         print("=" * 50)
         
         # 公司統計
@@ -319,7 +319,7 @@ class Job1111Crawler:
                     if job.get('company') and job.get('company') != 'N/A']
         if companies:
             company_counts = Counter(companies)
-            print(f"📈 公司分布 (前5名):")
+            print(f"公司分布 (前5名):")
             for company, count in company_counts.most_common(5):
                 print(f"   {company}: {count} 個職缺")
         
@@ -328,7 +328,7 @@ class Job1111Crawler:
                     if job.get('location') and job.get('location') != 'N/A']
         if locations:
             location_counts = Counter(locations)
-            print(f"\\n📍 地點分布:")
+            print(f"\\n地點分布:")
             for location, count in location_counts.most_common():
                 print(f"   {location}: {count} 個職缺")
         
@@ -336,19 +336,19 @@ class Job1111Crawler:
         relevance_scores = [job.get('relevance_score', 0) for job in jobs]
         if relevance_scores:
             avg_relevance = sum(relevance_scores) / len(relevance_scores)
-            print(f"\\n⭐ 平均相關度: {avg_relevance:.2f}")
+            print(f"\\n平均相關度: {avg_relevance:.2f}")
             print(f"   最高相關度: {max(relevance_scores)}")
             print(f"   最低相關度: {min(relevance_scores)}")
         
         # 薪資統計
         salaries = [job.get('salary') for job in jobs 
                    if job.get('salary') and job.get('salary') != 'N/A']
-        print(f"\\n💰 有薪資資訊的職缺: {len(salaries)} 個 ({len(salaries)/len(jobs)*100:.1f}%)")
+        print(f"\\n有薪資資訊的職缺: {len(salaries)} 個 ({len(salaries)/len(jobs)*100:.1f}%)")
         
         # 發布時間統計
         publish_dates = [job.get('publish_date') for job in jobs 
                         if job.get('publish_date') and job.get('publish_date') != 'N/A']
-        print(f"📅 有發布時間的職缺: {len(publish_dates)} 個 ({len(publish_dates)/len(jobs)*100:.1f}%)")
+        print(f"有發布時間的職缺: {len(publish_dates)} 個 ({len(publish_dates)/len(jobs)*100:.1f}%)")
     
     def crawl_multiple_pages(self, keyword="資料工程師", max_pages=3):
         """
@@ -371,12 +371,12 @@ class Job1111Crawler:
                 jobs = self.parse_jobs(html_content)
                 if jobs:
                     all_jobs.extend(jobs)
-                    print(f"✅ 第 {page} 頁爬取完成，獲得 {len(jobs)} 個職缺")
+                    print(f"第 {page} 頁爬取完成，獲得 {len(jobs)} 個職缺")
                 else:
-                    print(f"⚠️ 第 {page} 頁沒有找到職缺")
+                    print(f"第 {page} 頁沒有找到職缺")
                     break
             else:
-                print(f"❌ 第 {page} 頁爬取失敗")
+                print(f"第 {page} 頁爬取失敗")
                 break
             
             # 頁面間延遲
@@ -392,7 +392,7 @@ class Job1111Crawler:
 
 def main():
     """主程式"""
-    print("🚀 1111 人力銀行職缺爬蟲")
+    print("1111 人力銀行職缺爬蟲")
     print("=" * 50)
     
     # 建立爬蟲實例
@@ -407,7 +407,7 @@ def main():
         max_pages = 1
     
     # 開始爬取
-    print(f"\\n🎯 開始搜尋 '{keyword}' 相關職缺...")
+    print(f"\\n開始搜尋 '{keyword}' 相關職缺...")
     
     if max_pages == 1:
         # 單頁爬取
@@ -431,10 +431,10 @@ def main():
         filename = f"/Users/txwu/project/data/GetOffer/data/1111_{keyword.replace(' ', '_')}_jobs.csv"
         df = crawler.save_to_csv(jobs, filename)
         
-        print(f"\\n🎉 爬取完成！共獲得 {len(jobs)} 個職缺資料")
+        print(f"\\n爬取完成！共獲得 {len(jobs)} 個職缺資料")
         
     else:
-        print("❌ 沒有找到任何職缺資料")
+        print("沒有找到任何職缺資料")
 
 
 if __name__ == "__main__":
